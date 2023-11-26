@@ -1,3 +1,8 @@
+package example;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
 public class RegistrationPage {
 
     private WebDriver driver;
@@ -28,5 +33,33 @@ public class RegistrationPage {
 
     public boolean isEmailErrorMessageDisplayed() {
         return driver.findElement(By.id("email-error-message")).isDisplayed();
+    }
+
+    public void setName(String name) {
+        driver.findElement(By.id("name")).sendKeys(name);
+    }
+
+    public void setAge(int age) {
+        driver.findElement(By.id("age")).sendKeys(String.valueOf(age));
+    }
+
+    public void setAddress(String address) {
+        driver.findElement(By.id("address")).sendKeys(address);
+    }
+
+    public void setEmail(String email) {
+        driver.findElement(By.id("email")).sendKeys(email);
+    }
+
+    public boolean isSuccessMessageDisplayed() {
+        return driver.findElement(By.id("success-message")).isDisplayed();
+    }
+
+    public String getSuccessMessageText() {
+        return driver.findElement(By.id("success-message")).getText();
+    }
+
+    public String getEmailErrorMessageText() {
+        return driver.findElement(By.id("email-error-message")).getText();
     }
 }
