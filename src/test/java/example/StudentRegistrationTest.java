@@ -1,21 +1,23 @@
 package example;
 
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StudentRegistrationTest {
 
     private WebDriver driver;
 
+    private RegistrationPage registrationPage;
+
     @BeforeEach
     public void setUp() {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver");
         driver = new ChromeDriver();
+
+        registrationPage = new RegistrationPage(driver);
     }
 
     @AfterEach
@@ -26,78 +28,65 @@ public class StudentRegistrationTest {
     @Test
     @DisplayName("Cadastrar sem nenhum dado preenchido")
     public void testEmptyRegistration() {
-        driver.get("https://localhost:3000/cadastro.html");
-        driver.findElement(By.id("addStudent")).click();
+        registrationPage.open();
+        registrationPage.clickRegisterButton();
 
-        WebElement nameErrorMessage = driver.findElement(By.id("name-error-message"));
-        assertTrue(nameErrorMessage.isDisplayed()
-                && nameErrorMessage.getText().equals("Este campo é obrigatório"));
+        assertThat(registrationPage.isNameErrorMessageDisplayed())
+                .as("O campo nome é obrigatório")
+                .isTrue();
 
-        WebElement ageErrorMessage = driver.findElement(By.id("age-error-message"));
-        assertTrue(ageErrorMessage.isDisplayed()
-                && ageErrorMessage.getText().equals("Este campo é obrigatório"));
+        assertThat(registrationPage.isAgeErrorMessageDisplayed())
+                .as("O campo idade é obrigatório")
+                .isTrue();
 
-        WebElement addressErrorMessage = driver.findElement(By.id("address-error-message"));
-        assertTrue(addressErrorMessage.isDisplayed()
-                && addressErrorMessage.getText().equals("Este campo é obrigatório"));
+        assertThat(registrationPage.isAddressErrorMessageDisplayed())
+                .as("O campo endereço é obrigatório")
+                .isTrue();
 
-        WebElement emailErrorMessage = driver.findElement(By.id("email-error-message"));
-        assertTrue(emailErrorMessage.isDisplayed()
-                && emailErrorMessage.getText().equals("Este campo é obrigatório"));
+        assertThat(registrationPage.isEmailErrorMessageDisplayed())
+                .as("O campo e-mail é obrigatório")
+                .isTrue();
     }
 
     @Test
     @DisplayName("Cadastrar com todos os dados")
-    public void testValidRegistration() {
-        driver.get("https://localhost:3000/cadastro.html");
+    public void testRegisterWithAllData() {
+        registrationPage.open();
 
-        WebElement nameInput = driver.findElement(By.id("name"));
-        nameInput.sendKeys("John Doe");
+        registrationPage.setName("John Doe");
+        registrationPage.setAge(25);
+        registrationPage.setAddress("123 Main Street");
+        registrationPage.setEmail("johndoe@email.com");
 
-        WebElement ageInput = driver.findElement(By.id("age"));
-        ageInput.sendKeys("25");
+        registrationPage.clickRegisterButton();
 
-        WebElement addressInput = driver.findElement(By.id("address"));
-        addressInput.sendKeys("123 Main Street");
+        assertThat(registrationPage.isSuccessMessageDisplayed())
+                .as("Mensagem de sucesso deve ser exibida")
+                .isTrue();
 
-        WebElement emailInput = driver.findElement(By.id("email"));
-        emailInput.sendKeys("johndoe@email.com");
-
-        driver.findElement(By.id("addStudent")).click();
-
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("success-message")));
-
-        WebElement successMessage = driver.findElement(By.id("success-message"));
-        assertTrue(successMessage.isDisplayed()
-                && successMessage.getText().equals("Aluno cadastrado com sucesso"));
-
-        driver.get("https://localhost:3000/lista.html");
-
-        WebElement studentRow = driver.findElement(By.xpath("//tbody/tr[1]/td[1]"));
-        assertTrue(studentRow.getText().equals("John Doe"));
+        assertThat(registrationPage.getSuccessMessageText())
+                .as("Mensagem de sucesso deve conter o texto correto")
+                .isEqualTo("Aluno cadastrado com sucesso");
     }
 
     @Test
-    @DisplayName("Tentar cadastrar com email invalido")
-    public void testInvalidEmailRegistration() {
-        driver.get("https://localhost:3000/cadastro.html");
+    @DisplayName("Tentar cadastrar com e-mail inválido")
+    public void testRegisterWithInvalidEmail() {
+        registrationPage.open();
 
-        WebElement nameInput = driver.findElement(By.id("name"));
-        nameInput.sendKeys("Jane Doe");
+        registrationPage.setName("John Doe");
+        registrationPage.setAge(25);
+        registrationPage.setAddress("123 Main Street");
+        registrationPage.setEmail("johndoe");
 
-        WebElement ageInput = driver.findElement(By.id("age"));
-        ageInput.sendKeys("30");
+        registrationPage.clickRegisterButton();
 
-        WebElement addressInput = driver.findElement(By.id("address"));
-        addressInput.sendKeys("456 Elm Street");
+        assertThat(registrationPage.isEmailErrorMessageDisplayed())
+                .as("Mensagem de erro de e-mail deve ser exibida")
+                .isTrue();
 
-        WebElement emailInput = driver.findElement(By.id("email"));
-        emailInput.sendKeys("invalid@email");
-
-        driver.findElement(By.id("addStudent")).click();
-
-        WebElement emailErrorMessage = driver.findElement(By.id("email-error-message"));
-        assertTrue(emailErrorMessage.isDisplayed()
-                && emailErrorMessage.getText().equals("Formato de email inválido"));
+        assertThat(registrationPage.getEmailErrorMessageText())
+                .as("Mensagem de erro de e-mail deve conter o texto correto")
+                .isEqualTo("O campo e-mail deve ser um endereço de e-mail válido");
     }
+}
