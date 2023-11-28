@@ -83,5 +83,19 @@ public class ListStudentsTest {
         assertThat(listPage.verifyUserRegistration("John Doe")).isTrue();
     }
 
+    @Test
+    @DisplayName("Remover todos os dados de cadastro")
+    public void testRemoveAllData() {
+        listPage.open();
+
+        int beforeCount = listPage.getStudentCount();
+        listPage.removeAllData();
+        listPage.open();
+        int afterCount = listPage.getStudentCount();
+
+        assertThat(beforeCount == 0 && afterCount == 0)
+                .as("Deve remover todos os dados de cadastro")
+                .isTrue();
+    }
 
 }
