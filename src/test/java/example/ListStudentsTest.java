@@ -1,4 +1,5 @@
-import example.ListPage;
+package example;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +11,7 @@ public class ListStudentsTest {
 
     private WebDriver driver;
     private ListPage listPage;
+    private RegistrationPage registrationPage;
 
     @BeforeAll
     public static void setupWebDriver() {
@@ -28,6 +30,17 @@ public class ListStudentsTest {
     }
 
     @Test
+    @DisplayName("Verificar se a lista possui estudante")
+    public void testIfHasStudents() {
+        registrationPage.open();
+        registrationPage.createStudent();
+
+        listPage.open();
+        final boolean isPresent = listPage.isStudentPresent(0);
+        assertThat(isPresent).isFalse();
+    }
+
+    @Test
     @DisplayName("Verificar se a lista está vazia")
     public void testIsListEmpty() {
         listPage.open();
@@ -38,11 +51,12 @@ public class ListStudentsTest {
     @Test
     @DisplayName("Excluir aluno da lista")
     public void testDeleteStudent() {
-        int studentIndexToDelete = 0;
+        registrationPage.open();
+        registrationPage.createStudent();
 
+        int studentIndexToDelete = 0;
         listPage.open();
         listPage.deleteStudent(studentIndexToDelete);
-
         assertThat(listPage.isStudentPresent(studentIndexToDelete)).isFalse();
     }
 }

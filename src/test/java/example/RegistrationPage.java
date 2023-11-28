@@ -1,5 +1,6 @@
 package example;
 
+import com.github.javafaker.Faker;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,6 +10,7 @@ import java.util.List;
 public class RegistrationPage {
 
     private WebDriver driver;
+    private Faker faker = new Faker();
 
     public RegistrationPage(WebDriver driver) {
         this.driver = driver;
@@ -44,6 +46,14 @@ public class RegistrationPage {
         WebElement emailInput = driver.findElement(By.id("email"));
         emailInput.clear();
         emailInput.sendKeys(email);
+    }
+
+    public void createStudent() {
+        setEmail(faker.internet().emailAddress());
+        setName(faker.name().name());
+        setAddress(faker.address().fullAddress());
+        setAge(faker.number().numberBetween(0, 100));
+        clickRegisterButton();
     }
 
     public boolean isNameErrorMessageDisplayed() {
