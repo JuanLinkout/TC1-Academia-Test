@@ -2,6 +2,9 @@ package example;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public class RegistrationPage {
 
@@ -12,43 +15,56 @@ public class RegistrationPage {
     }
 
     public void open() {
-        driver.get("https://localhost:3000/cadastro.html");
+        driver.get("http://127.0.0.1:5500/cadastro.html");
     }
 
     public void clickRegisterButton() {
-        driver.findElement(By.id("addStudent")).click();
-    }
-
-    public boolean isNameErrorMessageDisplayed() {
-        return driver.findElement(By.id("name-error-message")).isDisplayed();
-    }
-
-    public boolean isAgeErrorMessageDisplayed() {
-        return driver.findElement(By.id("age-error-message")).isDisplayed();
-    }
-
-    public boolean isAddressErrorMessageDisplayed() {
-        return driver.findElement(By.id("address-error-message")).isDisplayed();
-    }
-
-    public boolean isEmailErrorMessageDisplayed() {
-        return driver.findElement(By.id("email-error-message")).isDisplayed();
+        driver.findElement(By.cssSelector(".btn.btn-primary")).click();
     }
 
     public void setName(String name) {
-        driver.findElement(By.id("name")).sendKeys(name);
+        WebElement nameInput = driver.findElement(By.id("name"));
+        nameInput.clear();
+        nameInput.sendKeys(name);
     }
 
     public void setAge(int age) {
-        driver.findElement(By.id("age")).sendKeys(String.valueOf(age));
+        WebElement ageInput = driver.findElement(By.id("age"));
+        ageInput.clear();
+        ageInput.sendKeys(String.valueOf(age));
     }
 
     public void setAddress(String address) {
-        driver.findElement(By.id("address")).sendKeys(address);
+        WebElement addressInput = driver.findElement(By.id("address"));
+        addressInput.clear();
+        addressInput.sendKeys(address);
     }
 
     public void setEmail(String email) {
-        driver.findElement(By.id("email")).sendKeys(email);
+        WebElement emailInput = driver.findElement(By.id("email"));
+        emailInput.clear();
+        emailInput.sendKeys(email);
+    }
+
+    public boolean isNameErrorMessageDisplayed() {
+        return isErrorMessageDisplayed("name-error-message");
+    }
+
+    public boolean isAgeErrorMessageDisplayed() {
+        return isErrorMessageDisplayed("age-error-message");
+    }
+
+    public boolean isAddressErrorMessageDisplayed() {
+        return isErrorMessageDisplayed("address-error-message");
+    }
+
+    public boolean isEmailErrorMessageDisplayed() {
+        return isErrorMessageDisplayed("email-error-message");
+    }
+
+    private boolean isErrorMessageDisplayed(String id) {
+        List<WebElement> elements = driver.findElements(By.id(id));
+        return !elements.isEmpty() && elements.get(0).isDisplayed();
     }
 
     public boolean isSuccessMessageDisplayed() {
