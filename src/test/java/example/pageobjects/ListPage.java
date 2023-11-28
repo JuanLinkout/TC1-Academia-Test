@@ -54,5 +54,23 @@ public class ListPage {
     }
 
 
+    public void removeAllData() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("table tbody tr")));
+
+        List<WebElement> studentRows = driver.findElements(By.cssSelector("table tbody tr"));
+
+        for (WebElement studentRow : studentRows) {
+            studentRow.click();
+
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#deleteModal")));
+
+            driver.findElement(By.cssSelector("#deleteButton")).click();
+
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("#deleteModal")));
+        }
+
+    }
+
 
 }
