@@ -72,5 +72,12 @@ public class ListPage {
 
     }
 
+    public int getStudentCount() {
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("table tbody tr")));
+
+        List<WebElement> studentRows = driver.findElements(By.cssSelector("table tbody tr"));
+        return studentRows.size();
+    }
 
 }
