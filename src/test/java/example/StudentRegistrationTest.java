@@ -1,8 +1,10 @@
 package example;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,10 +14,14 @@ public class StudentRegistrationTest {
 
     private RegistrationPage registrationPage;
 
+    @BeforeAll
+    public static void setupWebDriver() {
+        WebDriverManager.firefoxdriver().setup();
+    }
+
     @BeforeEach
     public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver");
-        driver = new ChromeDriver();
+        driver = new FirefoxDriver();
 
         registrationPage = new RegistrationPage(driver);
     }
