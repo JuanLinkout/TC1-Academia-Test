@@ -24,6 +24,7 @@ public class ListStudentsTest {
     public void setUp() {
         driver = new FirefoxDriver();
         listPage = new ListPage(driver);
+        registrationPage = new RegistrationPage(driver);
     }
 
     @AfterEach
@@ -39,7 +40,7 @@ public class ListStudentsTest {
 
         listPage.open();
         final boolean isPresent = listPage.isStudentPresent(0);
-        assertThat(isPresent).isFalse();
+        assertThat(isPresent).isTrue();
     }
 
     @Test

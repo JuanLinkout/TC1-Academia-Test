@@ -54,6 +54,7 @@ public class RegistrationPage {
         setAddress(faker.address().fullAddress());
         setAge(faker.number().numberBetween(0, 100));
         clickRegisterButton();
+        driver.switchTo().alert().accept();
     }
 
     public boolean isNameErrorMessageDisplayed() {

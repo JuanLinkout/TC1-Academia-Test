@@ -16,17 +16,14 @@ public class ListPage {
     }
 
     public void open() {
-        driver.get("http://127.0.0.1:5500/cadastro.html");
+        driver.get("http://127.0.0.1:5500/lista.html");
     }
 
     public void deleteStudent(int index) {
         String deleteButtonXPath = String.format("//tbody/tr[%d]/td[last()]/button[text()='Excluir']", index + 1);
         WebElement deleteButton = driver.findElement(By.xpath(deleteButtonXPath));
         deleteButton.click();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement confirmDeleteButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("confirmDeleteButton")));
-        confirmDeleteButton.click();
+        driver.switchTo().alert().accept();
     }
 
     public boolean isStudentPresent(int index) {
