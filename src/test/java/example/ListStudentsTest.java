@@ -28,6 +28,14 @@ public class ListStudentsTest {
     }
 
     @Test
+    @DisplayName("Verificar se a lista está vazia")
+    public void testIsListEmpty() {
+        listPage.open();
+        final boolean isPresent = listPage.isStudentPresent(0);
+        assertThat(isPresent).isFalse();
+    }
+
+    @Test
     @DisplayName("Excluir aluno da lista")
     public void testDeleteStudent() {
         int studentIndexToDelete = 0;
