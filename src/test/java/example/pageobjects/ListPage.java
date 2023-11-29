@@ -41,6 +41,26 @@ public class ListPage {
         inputNome.sendKeys(value);
     }
 
+    public void changeEmailInput(String value) {
+        WebElement inputEmail = driver.findElement(By.id("editEmail"));
+        inputEmail.clear();
+        inputEmail.sendKeys(value);
+    }
+
+    public void changeAddressInput(String value) {
+        WebElement inputAddress = driver.findElement(By.id("editAddress"));
+        inputAddress.clear();
+        inputAddress.sendKeys(value);
+    }
+
+    public void changeAgeInput(String value) {
+        WebElement inputAge = driver.findElement(By.id("editAge"));
+        inputAge.clear();
+        inputAge.sendKeys(value);
+    }
+
+
+
     public void confirmModalEditing() {
         driver.findElement(By.cssSelector("#editModal .btn.btn-primary")).click();
     }
