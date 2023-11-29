@@ -143,7 +143,7 @@ public class StudentRegistrationTest {
 
     @Test
     @DisplayName("Editar um usuário o deixando sem dados")
-    public void testVerifyUserIsRegistered(){
+    public void testEditUserToEmptyValues(){
         registrationPage.open();
 
         registrationPage.createStudent();

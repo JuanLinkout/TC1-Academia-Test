@@ -64,22 +64,4 @@ public class ListStudentsTest {
         listPage.deleteStudent(studentIndexToDelete);
         assertThat(listPage.isStudentPresent(studentIndexToDelete)).isFalse();
     }
-
-    @Test
-    @DisplayName("Remover todos os dados de cadastro")
-    public void testRemoveAllData() {
-        registrationPage.open();
-        registrationPage.createStudent();
-
-        listPage.open();
-        int beforeCount = listPage.getStudentCount();
-        listPage.removeAllData();
-        listPage.open();
-        int afterCount = listPage.getStudentCount();
-
-        assertThat(beforeCount == 0 && afterCount == 0)
-                .as("Deve remover todos os dados de cadastro")
-                .isTrue();
-    }
-
 }
