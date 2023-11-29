@@ -1,15 +1,15 @@
 package example.pageobjects;
 
+import com.github.javafaker.Faker;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
 public class ListPage {
     private WebDriver driver;
+    private Faker faker = new Faker();
 
     public ListPage(WebDriver driver) {
         this.driver = driver;
@@ -24,6 +24,29 @@ public class ListPage {
         WebElement deleteButton = driver.findElement(By.xpath(deleteButtonXPath));
         deleteButton.click();
         driver.switchTo().alert().accept();
+    }
+
+    public void openEditStudentModal(int index) {
+        String editButtonPath = String.format("//tbody/tr[%d]/td[last()]/button[text()='Editar']", index + 1);
+        WebElement editButton = driver.findElement(By.xpath(editButtonPath));
+        editButton.click();
+    }
+
+    public void changeNameInput(String value) {
+        WebElement inputNome = driver.findElement(By.id("editName"));
+        inputNome.clear();
+        inputNome.sendKeys(value);
+    }
+
+    public void confirmModalEditing() {
+        driver.findElement(By.cssSelector("#editModal .btn.btn-primary")).click();
+    }
+
+
+
+    public String getNameInputValue() {
+        WebElement inputNome = driver.findElement(By.id("editName"));
+        return inputNome.getAttribute("value");
     }
 
     public boolean isStudentPresent(int index) {

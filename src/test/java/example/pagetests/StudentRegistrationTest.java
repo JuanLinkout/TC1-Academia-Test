@@ -1,9 +1,12 @@
 package example.pagetests;
 
+import com.github.javafaker.Faker;
+import example.pageobjects.ListPage;
 import example.pageobjects.RegistrationPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,7 +15,9 @@ public class StudentRegistrationTest {
 
     private WebDriver driver;
 
+    private Faker faker;
     private RegistrationPage registrationPage;
+    private ListPage listPage;
 
     @BeforeAll
     public static void setupWebDriver() {
@@ -21,8 +26,9 @@ public class StudentRegistrationTest {
 
     @BeforeEach
     public void setUp() {
+        faker = new Faker();
         driver = new FirefoxDriver();
-
+        listPage = new ListPage(driver);
         registrationPage = new RegistrationPage(driver);
     }
 
@@ -94,5 +100,23 @@ public class StudentRegistrationTest {
         assertThat(registrationPage.getEmailErrorMessageText())
                 .as("Mensagem de erro de e-mail deve conter o texto correto")
                 .isEqualTo("O campo e-mail deve ser um endereço de e-mail válido");
+    }
+
+
+    @Test
+    @DisplayName("Editar corretamente um usuário")
+    public void editCorrectlyAUser() {
+        registrationPage.open();
+        registrationPage.createStudent();
+
+        int studentIndex = 0;
+        listPage.open();
+        listPage.openEditStudentModal(studentIndex);
+
+        String name = faker.name().name();
+        listPage.changeNameInput(name);
+        assertThat(listPage.getNameInputValue()).isEqualTo(name);
+
+        listPage.confirmModalEditing();
     }
 }
