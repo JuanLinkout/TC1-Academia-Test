@@ -4,6 +4,8 @@ import com.github.javafaker.Faker;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
@@ -38,6 +40,26 @@ public class ListPage {
         inputNome.clear();
         inputNome.sendKeys(value);
     }
+
+    public void changeEmailInput(String value) {
+        WebElement inputEmail = driver.findElement(By.id("editEmail"));
+        inputEmail.clear();
+        inputEmail.sendKeys(value);
+    }
+
+    public void changeAddressInput(String value) {
+        WebElement inputAddress = driver.findElement(By.id("editAddress"));
+        inputAddress.clear();
+        inputAddress.sendKeys(value);
+    }
+
+    public void changeAgeInput(String value) {
+        WebElement inputAge = driver.findElement(By.id("editAge"));
+        inputAge.clear();
+        inputAge.sendKeys(value);
+    }
+
+
 
     public void confirmModalEditing() {
         driver.findElement(By.cssSelector("#editModal .btn.btn-primary")).click();
