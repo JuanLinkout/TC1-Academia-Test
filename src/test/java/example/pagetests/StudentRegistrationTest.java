@@ -124,20 +124,46 @@ public class StudentRegistrationTest {
     @DisplayName("Tentar cadastrar com e-mail válido")
     public void testRegisterWithValidEmail() {
         registrationPage.open();
+        registrationPage.createStudent();
+    }
 
-        registrationPage.setName("John Doe");
-        registrationPage.setAge(25);
-        registrationPage.setAddress("123 Main Street");
-        registrationPage.setEmail("johndoe@email.com");
+    @Test
+    @DisplayName("Editar para um usuário inválido")
+    public void editToAInvalidUser() {
+        registrationPage.open();
+        registrationPage.createStudent();
 
-        registrationPage.clickRegisterButton();
+        int studentIndex = 0;
+        listPage.open();
+        listPage.openEditStudentModal(studentIndex);
 
-        assertThat(registrationPage.isSuccessMessageDisplayed())
-                .as("Mensagem sucesso deve ser exibida")
-                .isTrue();
+        String email = faker.internet().emailAddress();
+        String invalidEmail = email.substring(0, 3) + "#" + email.substring(3);
+        listPage.changeEmailInput(invalidEmail);
 
-        assertThat(registrationPage.getSuccessMessageText())
-                .as("Mensagem de sucesso deve conter o texto correto")
-                .isEqualTo("Aluno cadastrado com sucesso");
+        assertThat(registrationPage.getAlertSuccessCreate()).isFalse();
+
+        listPage.confirmModalEditing();
+    }
+
+    @Test
+    @DisplayName("Editar um usuário o deixando sem dados")
+    public void testVerifyUserIsRegistered(){
+        registrationPage.open();
+
+        registrationPage.createStudent();
+
+        int studentIndex = 0;
+        listPage.open();
+        listPage.openEditStudentModal(studentIndex);
+
+        String noData = "";
+        listPage.changeNameInput(noData);
+        listPage.changeAgeInput(noData);
+        listPage.changeAddressInput(noData);
+        listPage.changeEmailInput(noData);
+        assertThat(registrationPage.getAlertSuccessCreate()).isFalse();
+
+        listPage.confirmModalEditing();
     }
 }
