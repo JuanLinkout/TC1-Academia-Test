@@ -136,7 +136,7 @@ public class StudentRegistrationTest {
         String invalidEmail = email.substring(0, 3) + "#" + email.substring(3);
         listPage.changeEmailInput(invalidEmail);
 
-        assertThat(registrationPage.getAlertSuccessCreate()).isFalse();
+        assertThat(registrationPage.getAlert()).isFalse();
 
         listPage.confirmModalEditing();
     }
@@ -157,7 +157,7 @@ public class StudentRegistrationTest {
         listPage.changeAgeInput(noData);
         listPage.changeAddressInput(noData);
         listPage.changeEmailInput(noData);
-        assertThat(registrationPage.getAlertSuccessCreate()).isFalse();
+        assertThat(registrationPage.getAlert()).isFalse();
 
         listPage.confirmModalEditing();
     }

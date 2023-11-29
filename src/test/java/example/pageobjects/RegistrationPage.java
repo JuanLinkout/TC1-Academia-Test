@@ -58,33 +58,12 @@ public class RegistrationPage {
         driver.switchTo().alert().accept();
     }
 
-    public boolean getAlertSuccessCreate() {
-        try {
-            driver.switchTo().alert();
-            return true;
-        } catch (NoAlertPresentException e) {
-            return false;
-        }
-    }
-
-    public String getTextFromAlert() {
-        String alertText = driver.switchTo().alert().getText();
-        driver.switchTo().alert().accept();
-        return alertText;
-    }
-
-    public void createInvalidStudent() {
-        String email = faker.internet().emailAddress();
-        String invalidEmail = email.substring(0, 3) + "#" + email.substring(3);
-        setEmail(invalidEmail);
-
     public void createStudentWithoutAcceptAlert() {
         setEmail(faker.internet().emailAddress());
         setName(faker.name().name());
         setAddress(faker.address().fullAddress());
         setAge(faker.number().numberBetween(0, 100));
         clickRegisterButton();
-        driver.switchTo().alert().accept();
     }
 
     public boolean getAlert() {
