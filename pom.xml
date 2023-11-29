@@ -41,7 +41,7 @@
         <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
-            <version>1.0.2</version> <!-- Verifique se há uma versão mais recente no repositório Maven -->
+            <version>1.0.2</version>
         </dependency>
     </dependencies>
 

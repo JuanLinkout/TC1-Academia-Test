@@ -77,6 +77,9 @@ public class RegistrationPage {
         String email = faker.internet().emailAddress();
         String invalidEmail = email.substring(0, 3) + "#" + email.substring(3);
         setEmail(invalidEmail);
+
+    public void createStudentWithoutAcceptAlert() {
+        setEmail(faker.internet().emailAddress());
         setName(faker.name().name());
         setAddress(faker.address().fullAddress());
         setAge(faker.number().numberBetween(0, 100));
@@ -84,36 +87,18 @@ public class RegistrationPage {
         driver.switchTo().alert().accept();
     }
 
-    public boolean isNameErrorMessageDisplayed() {
-        return isErrorMessageDisplayed("name-error-message");
+    public boolean getAlert() {
+        try {
+            driver.switchTo().alert();
+            return true;
+        } catch (NoAlertPresentException e) {
+            return false;
+        }
     }
 
-    public boolean isAgeErrorMessageDisplayed() {
-        return isErrorMessageDisplayed("age-error-message");
-    }
-
-    public boolean isAddressErrorMessageDisplayed() {
-        return isErrorMessageDisplayed("address-error-message");
-    }
-
-    public boolean isEmailErrorMessageDisplayed() {
-        return isErrorMessageDisplayed("email-error-message");
-    }
-
-    private boolean isErrorMessageDisplayed(String id) {
-        List<WebElement> elements = driver.findElements(By.id(id));
-        return !elements.isEmpty() && elements.get(0).isDisplayed();
-    }
-
-    public boolean isSuccessMessageDisplayed() {
-        return driver.findElement(By.id("success-message")).isDisplayed();
-    }
-
-    public String getSuccessMessageText() {
-        return driver.findElement(By.id("success-message")).getText();
-    }
-
-    public String getEmailErrorMessageText() {
-        return driver.findElement(By.id("email-error-message")).getText();
+    public String getTextFromAlert() {
+        String alertText = driver.switchTo().alert().getText();
+        driver.switchTo().alert().accept();
+        return alertText;
     }
 }

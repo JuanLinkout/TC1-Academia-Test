@@ -69,7 +69,6 @@ public class ListStudentsTest {
     @DisplayName("Remover todos os dados de cadastro")
     public void testRemoveAllData() {
         registrationPage.open();
-
         registrationPage.createStudent();
 
         listPage.open();
