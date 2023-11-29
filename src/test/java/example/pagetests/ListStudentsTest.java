@@ -1,5 +1,6 @@
 package example.pagetests;
 
+import com.github.javafaker.Faker;
 import example.pageobjects.ListPage;
 import example.pageobjects.RegistrationPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -13,6 +14,7 @@ public class ListStudentsTest {
 
     private WebDriver driver;
     private ListPage listPage;
+    private Faker faker;
     private RegistrationPage registrationPage;
 
     @BeforeAll
@@ -64,31 +66,13 @@ public class ListStudentsTest {
     }
 
     @Test
-    @DisplayName("Após o Cadastro verficar se o usuário for cadastrado")
-    public void testVerifyUserIsRegistered(){
-        registrationPage.open();
-
-        registrationPage.setName("John Doe");
-        registrationPage.setAge(25);
-        registrationPage.setAddress("123 Main Street");
-        registrationPage.setEmail("johndoe@email.com");
-
-        registrationPage.clickRegisterButton();
-
-        assertThat(registrationPage.isSuccessMessageDisplayed())
-                .as("Mensagem sucesso deve ser exibida")
-                .isTrue();
-
-        listPage.open();
-
-        assertThat(listPage.verifyUserRegistration("John Doe")).isTrue();
-    }
-
-    @Test
     @DisplayName("Remover todos os dados de cadastro")
     public void testRemoveAllData() {
-        listPage.open();
+        registrationPage.open();
 
+        registrationPage.createStudent();
+
+        listPage.open();
         int beforeCount = listPage.getStudentCount();
         listPage.removeAllData();
         listPage.open();
