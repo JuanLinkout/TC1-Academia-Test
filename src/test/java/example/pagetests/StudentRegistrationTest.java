@@ -119,4 +119,25 @@ public class StudentRegistrationTest {
 
         listPage.confirmModalEditing();
     }
+
+    @Test
+    @DisplayName("Tentar cadastrar com e-mail válido")
+    public void testRegisterWithValidEmail() {
+        registrationPage.open();
+
+        registrationPage.setName("John Doe");
+        registrationPage.setAge(25);
+        registrationPage.setAddress("123 Main Street");
+        registrationPage.setEmail("johndoe@email.com");
+
+        registrationPage.clickRegisterButton();
+
+        assertThat(registrationPage.isSuccessMessageDisplayed())
+                .as("Mensagem sucesso deve ser exibida")
+                .isTrue();
+
+        assertThat(registrationPage.getSuccessMessageText())
+                .as("Mensagem de sucesso deve conter o texto correto")
+                .isEqualTo("Aluno cadastrado com sucesso");
+    }
 }

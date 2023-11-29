@@ -62,4 +62,41 @@ public class ListStudentsTest {
         listPage.deleteStudent(studentIndexToDelete);
         assertThat(listPage.isStudentPresent(studentIndexToDelete)).isFalse();
     }
+
+    @Test
+    @DisplayName("Após o Cadastro verficar se o usuário for cadastrado")
+    public void testVerifyUserIsRegistered(){
+        registrationPage.open();
+
+        registrationPage.setName("John Doe");
+        registrationPage.setAge(25);
+        registrationPage.setAddress("123 Main Street");
+        registrationPage.setEmail("johndoe@email.com");
+
+        registrationPage.clickRegisterButton();
+
+        assertThat(registrationPage.isSuccessMessageDisplayed())
+                .as("Mensagem sucesso deve ser exibida")
+                .isTrue();
+
+        listPage.open();
+
+        assertThat(listPage.verifyUserRegistration("John Doe")).isTrue();
+    }
+
+    @Test
+    @DisplayName("Remover todos os dados de cadastro")
+    public void testRemoveAllData() {
+        listPage.open();
+
+        int beforeCount = listPage.getStudentCount();
+        listPage.removeAllData();
+        listPage.open();
+        int afterCount = listPage.getStudentCount();
+
+        assertThat(beforeCount == 0 && afterCount == 0)
+                .as("Deve remover todos os dados de cadastro")
+                .isTrue();
+    }
+
 }
